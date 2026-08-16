@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORTNITE // Competitive Stack</title>
+<style>
+:root{
+  --bg:#07080b; --panel:#0d1016; --panel2:#11151d; --line:#202632;
+  --text:#f4f6fa; --muted:#8e97a8; --accent:#7c5cff; --accent2:#20e3b2;
+  --glow:rgba(124,92,255,.24);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:
+  radial-gradient(circle at 10% 0%,rgba(124,92,255,.12),transparent 28%),
+  radial-gradient(circle at 90% 10%,rgba(32,227,178,.07),transparent 25%),
+  var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:auto;padding:34px 22px 70px}
+.hero{padding:34px 0 26px;display:flex;justify-content:space-between;gap:30px;align-items:end}
+.kicker{font-size:11px;letter-spacing:.22em;color:var(--accent2);font-weight:800}
+h1{font-size:clamp(38px,6vw,76px);line-height:.92;margin:10px 0 16px;letter-spacing:-.055em}
+.hero p{max-width:720px;color:var(--muted);font-size:15px;line-height:1.65;margin:0}
+.badge{border:1px solid var(--line);background:rgba(255,255,255,.025);padding:10px 13px;border-radius:999px;color:#b9c0cc;font-size:12px;white-space:nowrap}
+.nav{position:sticky;top:12px;z-index:5;display:flex;gap:8px;overflow:auto;padding:9px;margin:10px 0 30px;background:rgba(7,8,11,.72);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:16px}
+.nav a{font-size:12px;color:#aab2c0;padding:9px 11px;border-radius:10px;white-space:nowrap}
+.nav a:hover{background:#151a24;color:white}
+section{margin-top:46px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:14px}
+h2{font-size:24px;margin:0;letter-spacing:-.03em}
+.count{color:#626b7b;font-size:11px;text-transform:uppercase;letter-spacing:.14em}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{
+  position:relative;display:flex;justify-content:space-between;gap:18px;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:16px;padding:17px 18px;
+  overflow:hidden;transition:.2s ease;transform-style:preserve-3d;
+}
+.card:before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 25%);opacity:0;transition:.2s;pointer-events:none}
+.card:hover{border-color:#343c4b;transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.24)}
+.card:hover:before{opacity:1}
+.left{position:relative;z-index:1;min-width:0}
+.name{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.desc{color:var(--muted);font-size:12.5px;line-height:1.55;margin-top:6px;max-width:700px}
+.tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 7px;border-radius:6px;background:#171d27;color:#aab4c4}
+.hot{color:#ffd36b;background:rgba(255,211,107,.09)}
+.free{color:#55e6bc;background:rgba(32,227,178,.08)}
+.pro{color:#b59fff;background:rgba(124,92,255,.10)}
+.open{position:relative;z-index:1;align-self:center;min-width:58px;text-align:center;border:1px solid #2a3140;border-radius:9px;padding:8px 10px;font-size:11px;color:#cbd2df;background:#0b0e13;transition:.18s}
+.open:hover{border-color:var(--accent);color:white;box-shadow:0 0 20px var(--glow)}
+.featured{border-color:#3b3262;background:linear-gradient(145deg,rgba(124,92,255,.09),rgba(255,255,255,.018))}
+.footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:#687181;font-size:11px;line-height:1.6}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.hero{display:block}.badge{display:inline-block;margin-top:18px}}
+
+.controls{display:flex;gap:5px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:5px;border-radius:12px}
+.lang-btn{border:0;background:transparent;color:#7f8898;font-size:11px;font-weight:900;padding:7px 10px;border-radius:8px;cursor:pointer}
+.lang-btn.active{background:#171d27;color:#fff;box-shadow:0 0 18px rgba(124,92,255,.12)}
+.author{color:#fff;font-size:13px;font-weight:800;letter-spacing:.12em;text-align:center;margin-bottom:12px}
+
+.controls{display:flex;gap:5px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:5px;border-radius:12px}
+.lang-btn{border:0;background:transparent;color:#7f8898;font-size:11px;font-weight:900;padding:7px 10px;border-radius:8px;cursor:pointer}
+.lang-btn.active{background:#171d27;color:#fff;box-shadow:0 0 18px rgba(124,92,255,.12)}
+.community-card{border-color:#29233d;background:linear-gradient(145deg,rgba(124,92,255,.055),rgba(255,255,255,.015))}
+.community-card:hover{border-color:#51417e;box-shadow:0 12px 40px rgba(75,48,145,.14)}
+.community-meta{display:flex;gap:7px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.community-pill{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 7px;border-radius:6px;background:rgba(124,92,255,.13);color:#bcaaff}
+.community-pill.soft{background:rgba(124,92,255,.08);color:#a99ce0}
+.discord-fork{background:rgba(124,92,255,.16)!important;color:#bcaaff!important}
+
+/* Community CTA fix: keep the action inside the card at every width. */
+.card .open{
+  flex:0 0 auto;
+  min-width:0;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+}
+.card.community-card .open{
+  min-width:118px;
+  padding:0 12px;
+}
+@media (max-width:620px){
+  .card.community-card .open{
+    min-width:108px;
+    font-size:10px;
+    padding:0 9px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="kicker">FORTNITE / COMPETITIVE STACK / 2026</div>
+      <h1>THE COMP<br>STACK.</h1>
+      <p><span data-lang-content="ru">Подборка самых заметных и практически полезных сервисов вокруг competitive Fortnite: праки, closed lobbies, аналитика, drop spots, replay review, clips, network tools и tournament data. Без гайдов — только источник → что он делает.</span><span data-lang-content="en" style="display:none">A curated stack of the most useful competitive Fortnite services: practice, closed lobbies, analytics, drop spots, replay review, clips, network tools and tournament data. No guides — just the source → what it does.</span></p>
+    </div>
+    <div class="controls">
+      <button class="lang-btn active" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="#practice" data-i18n="practiceNav">ПРАКТИКА</a><a href="#analytics" data-i18n="analyticsNav">АНАЛИТИКА</a><a href="#drops" data-i18n="dropsNav">ВЫСАДКА</a>
+    <a href="#tournaments" data-i18n="tournamentsNav">ТУРНИРЫ</a><a href="#network" data-i18n="networkNav">СЕТЬ</a><a href="#recording" data-i18n="recordingNav">ЗАПИСЬ</a>
+    <a href="#aim" data-i18n="aimNav">AIM / ТРЕНИРОВКА</a><a href="#communication" data-i18n="communicationNav">ОБЩЕНИЕ</a><a href="#other" data-i18n="otherNav">ДРУГОЕ</a>
+  </nav>
+
+  <section id="practice">
+    <div class="section-head"><h2 data-i18n="practice">Практика / Праки</h2><div class="count" data-i18n="practiceCount">ОСНОВНАЯ COMP-ИНФРАСТРУКТУРА</div></div>
+    <div class="grid">
+      <a class="card featured magnetic" href="https://nobleprac.com/" target="_blank">
+        <div class="left"><div class="name">Noble Practice <span class="tag hot">TOP</span></div><div class="desc"><span data-lang-content="ru">Один из главных Fortnite practice hubs: daily customs, ladders и система перехода из open в закрытые divisions. У Noble также есть отдельные closed-серверы для более сильных игроков.</span><span data-lang-content="en" style="display:none">One of the main Fortnite practice hubs: daily customs, ladders and progression into stronger closed divisions. Noble also operates closed practice environments for higher-level players.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card featured magnetic" href="https://vitalscrims.com/" target="_blank">
+        <div class="left"><div class="name">Vital Scrims <span class="tag hot">TOP</span></div><div class="desc"><span data-lang-content="ru">Крупная competitive practice-система: scrims, ladders, tournaments и matchmaking по уровню. Один из основных источников для серьёзной practice-среды.</span><span data-lang-content="en" style="display:none">Large competitive practice infrastructure with scrims, ladders, tournaments and skill-based matchmaking. One of the major practice sources for serious competitive play.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://manuscrims.com/" target="_blank">
+        <div class="left"><div class="name">Manu Scrims</div><div class="desc"><span data-lang-content="ru">Большая scrim/practice инфраструктура с customs, ladders и LFG. Хорошо известна внутри competitive-сцены.</span><span data-lang-content="en" style="display:none">Large scrim/practice infrastructure with customs, ladders and LFG, well known across the competitive scene.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://discord.com/" target="_blank">
+        <div class="left"><div class="name">Elite Customs</div><div class="desc"><span data-lang-content="ru">Крупная community/customs инфраструктура: daily customs, money games и другие форматы practice.</span><span data-lang-content="en" style="display:none">Large community/customs infrastructure for daily customs, money games and other practice formats.</span></div></div><span class="open"><span data-i18n="discord">DISCORD ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="analytics">
+    <div class="section-head"><h2 data-i18n="analytics">Аналитика / Replay / AI</h2><div class="count" data-i18n="analyticsCount">ДАННЫЕ И АНАЛИЗ</div></div>
+    <div class="grid">
+      <a class="card featured magnetic" href="https://www.osirion.gg/" target="_blank">
+        <div class="left"><div class="name">Osirion.gg <span class="tag hot">TOP</span></div><div class="desc"><span data-lang-content="ru">Comp-платформа с Fortnite Replay Analysis, Match Reports, AI Coach feedback, интерактивной Hypermap, heatmaps, dropmap/loot-path tools и 2D replay review.</span><span data-lang-content="en" style="display:none">Competitive platform with Fortnite Replay Analysis, Match Reports, AI Coach feedback, an interactive Hypermap, heatmaps, dropmap/loot-path tools and 2D replay review.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card featured magnetic" href="https://snapin.gg/" target="_blank">
+        <div class="left"><div class="name">Snapin.gg <span class="tag hot">AI</span></div><div class="desc"><span data-lang-content="ru">AI Fortnite coaching: загружаешь clips/replays, сервис ищет ошибки, группирует recurring mistakes и показывает прогресс по тренировкам.</span><span data-lang-content="en" style="display:none">AI Fortnite coaching: upload clips/replays and the service identifies mistakes, groups recurring issues and tracks training progress.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://kinchanalytics.com/" target="_blank">
+        <div class="left"><div class="name">Kinch Analytics</div><div class="desc"><span data-lang-content="ru">Один из самых известных источников tournament/competitive data: игроки, результаты, placements и статистика сцены.</span><span data-lang-content="en" style="display:none">One of the best-known sources for tournament/competitive data: players, results, placements and scene statistics.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://fortnitetracker.com/" target="_blank">
+        <div class="left"><div class="name">Fortnite Tracker</div><div class="desc"><span data-lang-content="ru">Статистика игроков, tournament results, PR/leaderboards и история событий. Также используется для проверки результатов practice-событий.</span><span data-lang-content="en" style="display:none">Player statistics, tournament results, PR/leaderboards and event history. Also useful for checking results from practice events.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="drops">
+    <div class="section-head"><h2 data-i18n="drops">Drop Spots / Высадка</h2><div class="count" data-i18n="dropsCount">ВЫСАДКА</div></div>
+    <div class="grid">
+      <a class="card featured magnetic" href="https://www.droppingcalc.com/" target="_blank">
+        <div class="left"><div class="name">DroppingCalc <span class="tag hot">PRO</span></div><div class="desc"><span data-lang-content="ru">Специализированный dropping calculator: рассчитывает момент прыжка и траекторию из Battle Bus. Сервис ориентирован именно на competitive drops.</span><span data-lang-content="en" style="display:none">Specialized dropping calculator that helps calculate the jump timing and trajectory from the Battle Bus, focused on competitive drops.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.osirion.gg/" target="_blank">
+        <div class="left"><div class="name">Osirion Hypermap</div><div class="desc"><span data-lang-content="ru">Dropmap generator, loot-path generator, bus-jump calculator, locations и heatmaps — инструменты для подготовки drop spot.</span><span data-lang-content="en" style="display:none">Dropmap generator, loot-path generator, bus-jump calculator, locations and heatmaps for planning a drop spot.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://vitalscrims.com/competitive" target="_blank">
+        <div class="left"><div class="name">Vital Dropmaps</div><div class="desc"><span data-lang-content="ru">Коллекция dropmaps для крупных турниров, включая FNCS и Cash Cups, с историей tournament drops.</span><span data-lang-content="en" style="display:none">Dropmap collection for major tournaments, including FNCS and Cash Cups, with historical tournament drop data.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://fortnite.gg/" target="_blank">
+        <div class="left"><div class="name">Fortnite.GG</div><div class="desc"><span data-lang-content="ru">Большая интерактивная карта Fortnite: POI, loot, locations и игровые данные. Удобна как базовый map reference.</span><span data-lang-content="en" style="display:none">Large interactive Fortnite map with POIs, loot, locations and game data. Useful as a general map reference.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="tournaments">
+    <div class="section-head"><h2 data-i18n="tournaments">Турниры / Competitive Data</h2><div class="count" data-i18n="tournamentsCount">РЕЗУЛЬТАТЫ И СЦЕНА</div></div>
+    <div class="grid">
+      <a class="card magnetic" href="https://www.fortnite.com/competitive" target="_blank">
+        <div class="left"><div class="name">Fortnite Competitive</div><div class="desc"><span data-lang-content="ru">Официальный источник Epic: competitive ecosystem, турниры и официальная информация.</span><span data-lang-content="en" style="display:none">Epic's official source for the competitive ecosystem, tournaments and official information.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://liquipedia.net/fortnite/Main_Page" target="_blank">
+        <div class="left"><div class="name">Liquipedia Fortnite</div><div class="desc"><span data-lang-content="ru">История турниров, игроки, команды, результаты и competitive-сцена в формате esports wiki.</span><span data-lang-content="en" style="display:none">Tournament history, players, teams, results and the competitive scene in esports-wiki format.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://fortnitetracker.com/" target="_blank">
+        <div class="left"><div class="name">Fortnite Tracker</div><div class="desc">Tournament leaderboards, placements, player stats и результаты событий.</div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.fortnite.com/competitive/events" target="_blank">
+        <div class="left"><div class="name">Epic Competitive Events</div><div class="desc"><span data-lang-content="ru">Официальная точка входа для расписания и деталей competitive events.</span><span data-lang-content="en" style="display:none">Official entry point for competitive event schedules and details.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="network">
+    <div class="section-head"><h2 data-i18n="network">Сеть / Ping</h2><div class="count" data-i18n="networkCount">ИНСТРУМЕНТЫ ДЛЯ LATENCY</div></div>
+    <div class="grid">
+      <a class="card magnetic" href="https://www.exitlag.com/" target="_blank">
+        <div class="left"><div class="name">ExitLag <span class="tag pro">NETWORK</span></div><div class="desc"><span data-lang-content="ru">Gaming network optimizer: альтернативная маршрутизация соединения, направленная на снижение latency/jitter и проблем с маршрутом.</span><span data-lang-content="en" style="display:none">Gaming network optimizer using alternative routing aimed at reducing latency, jitter and routing issues.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.gearupbooster.com/" target="_blank">
+        <div class="left"><div class="name">GearUP Booster <span class="tag pro">NETWORK</span></div><div class="desc"><span data-lang-content="ru">Game network booster с оптимизацией маршрута до игровых серверов.</span><span data-lang-content="en" style="display:none">Game network booster focused on optimizing the route to game servers.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.noping.com/" target="_blank">
+        <div class="left"><div class="name">NoPing</div><div class="desc"><span data-lang-content="ru">Gaming routing/latency optimizer, ориентированный на более стабильный маршрут.</span><span data-lang-content="en" style="display:none">Gaming routing/latency optimizer focused on providing a more stable route.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.wtfast.com/" target="_blank">
+        <div class="left"><div class="name">WTFast</div><div class="desc"><span data-lang-content="ru">Gaming network optimizer / route manager для игр.</span><span data-lang-content="en" style="display:none">Gaming network optimizer and route manager for games.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="recording">
+    <div class="section-head"><h2 data-i18n="recording">Запись / Clips / Review</h2><div class="count" data-i18n="recordingCount">VOD WORKFLOW</div></div>
+    <div class="grid">
+      <a class="card featured magnetic" href="https://insights.gg/" target="_blank">
+        <div class="left"><div class="name">Insights.gg <span class="tag hot">REVIEW</span></div><div class="desc"><span data-lang-content="ru">Платформа для game clips и review: автоматическая запись моментов, поиск/организация клипов и инструменты для анализа игровых сессий.</span><span data-lang-content="en" style="display:none">Game clipping and review platform with automatic capture, clip organization and tools for reviewing gaming sessions.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://medal.tv/" target="_blank">
+        <div class="left"><div class="name">Medal</div><div class="desc"><span data-lang-content="ru">Популярный instant clipping/recording инструмент для быстрых игровых моментов.</span><span data-lang-content="en" style="display:none">Popular instant clipping and recording tool for capturing gaming moments.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.overwolf.com/app/overwolf-outplayed" target="_blank">
+        <div class="left"><div class="name">Outplayed</div><div class="desc"><span data-lang-content="ru">Автоматическая запись игровых событий и highlights через Overwolf.</span><span data-lang-content="en" style="display:none">Automatic recording of gaming events and highlights through Overwolf.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://obsproject.com/" target="_blank">
+        <div class="left"><div class="name">OBS Studio</div><div class="desc"><span data-lang-content="ru">Open-source recording/streaming tool. Не Fortnite-specific, но стандартный инструмент для VOD и записи.</span><span data-lang-content="en" style="display:none">Open-source recording/streaming tool. Not Fortnite-specific, but a standard tool for VOD and recording.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="aim">
+    <div class="section-head"><h2 data-i18n="aim">Aim / Тренировка</h2><div class="count" data-i18n="aimCount">МЕХАНИКИ</div></div>
+    <div class="grid">
+      <a class="card magnetic" href="https://aimlabs.com/" target="_blank">
+        <div class="left"><div class="name">Aimlabs</div><div class="desc"><span data-lang-content="ru">Популярный aim trainer с большим количеством сценариев для tracking, clicking и reaction.</span><span data-lang-content="en" style="display:none">Popular aim trainer with a large library of tracking, clicking and reaction scenarios.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://store.steampowered.com/app/824270/KovaaKs/" target="_blank">
+        <div class="left"><div class="name">KovaaK's</div><div class="desc"><span data-lang-content="ru">Продвинутый aim trainer с огромной библиотекой сценариев и настройкой тренировок.</span><span data-lang-content="en" style="display:none">Advanced aim trainer with a huge scenario library and highly configurable training.</span></div></div><span class="open"><span data-i18n="steam">STEAM ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.fortnite.com/" target="_blank">
+        <div class="left"><div class="name">Fortnite Creative</div><div class="desc"><span data-lang-content="ru">Основная среда для custom mechanics practice: aim duels, piece control, realistic fights, zone wars и т.д.</span><span data-lang-content="en" style="display:none">Main environment for custom mechanics practice: aim duels, piece control, realistic fights, zone wars and more.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+
+  <section id="communication">
+    <div class="section-head"><h2 data-i18n="communication">Общение / Сообщество</h2><div class="count" data-i18n="communicationCount">КОМЬЮНИТИ И СВЯЗЬ</div></div>
+    <div class="grid">
+      <a class="card magnetic" href="https://discord.com/" target="_blank">
+        <div class="left">
+          <div class="name">Discord <span class="tag pro">CHAT</span></div>
+          <div class="desc">
+            <span data-lang-content="ru">Основная платформа общения вокруг Fortnite competitive: праки, LFG, тиммейты, private groups и комьюнити.</span>
+            <span data-lang-content="en" style="display:none">The main communication platform around Fortnite competitive: scrims, LFG, teammates, private groups and communities.</span>
+          </div>
+        </div>
+        <span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+
+      <a class="card magnetic" href="https://www.teamspeak.com/" target="_blank">
+        <div class="left">
+          <div class="name">TeamSpeak <span class="tag pro">VOICE</span></div>
+          <div class="desc">
+            <span data-lang-content="ru">Классический voice-chat клиент для командного общения и закрытых групп.</span>
+            <span data-lang-content="en" style="display:none">A classic voice-chat client for team communication and private groups.</span>
+          </div>
+        </div>
+        <span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+
+      <a class="card magnetic" href="https://github.com/uowuo/abaddon" target="_blank">
+        <div class="left">
+          <div class="name">Abaddon <span class="tag discord-fork">DISCORD FORK</span></div>
+          <div class="desc">
+            <span data-lang-content="ru">Альтернативный Discord-клиент с voice support, созданный на C++ и GTK 3. Поддерживает сообщения, DMs, роли, управление серверами, треды и кастомизацию интерфейса.</span>
+            <span data-lang-content="en" style="display:none">An alternative Discord client with voice support, made with C++ and GTK 3. It supports messages, DMs, roles, server management, threads and interface customization.</span>
+          </div>
+        </div>
+        <span class="open"><span data-i18n="github">GITHUB ↗</span></span>
+      </a>
+
+      <a class="card community-card magnetic" href="https://discord.gg/rNkhpayVhG" target="_blank">
+        <div class="left">
+          <div class="name">HHH</div>
+          <div class="desc">
+            <span data-lang-content="ru">WW mama_ufc_svo</span>
+            <span data-lang-content="en" style="display:none">WW mama_ufc_svo</span>
+          </div>
+          <div class="community-meta">
+            <span class="community-pill">COMMUNITY</span>
+            <span class="community-pill soft">DISCORD</span>
+          </div>
+        </div>
+        <span class="open"><span data-i18n="join">ПРИСОЕДИНИТЬСЯ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="other">
+    <div class="section-head"><h2 data-i18n="other">Другое / Полезное</h2><div class="count" data-i18n="otherCount">ДОПОЛНИТЕЛЬНАЯ ИНФРАСТРУКТУРА</div></div>
+    <div class="grid">
+      <a class="card magnetic" href="https://www.nvidia.com/en-us/geforce/technologies/reflex/" target="_blank">
+        <div class="left"><div class="name">NVIDIA Reflex</div><div class="desc"><span data-lang-content="ru">Система NVIDIA для снижения system latency. Для Fortnite важнее, чем большинство сомнительных «FPS boost» программ.</span><span data-lang-content="en" style="display:none">NVIDIA technology designed to reduce system latency. For Fortnite, it is more relevant than most questionable 'FPS boost' programs.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+      <a class="card magnetic" href="https://www.nvidia.com/en-us/software/nvidia-app/" target="_blank">
+        <div class="left"><div class="name">NVIDIA App</div><div class="desc"><span data-lang-content="ru">Драйверы, настройки NVIDIA и связанные GPU-функции в одном приложении.</span><span data-lang-content="en" style="display:none">NVIDIA drivers, settings and related GPU features in one application.</span></div></div><span class="open"><span data-i18n="open">ОТКРЫТЬ ↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="footer"><span data-lang-content="ru">Источники подобраны именно как competitive-инфраструктура, а не как общий Fortnite-гайд. Статус и популярность сервисов могут меняться. Ссылки ведут на сайты/официальные страницы сервисов; Discord-кнопки здесь намеренно не дробятся по регионам.</span>
+    <span data-lang-content="en" style="display:none">Sources are selected as competitive infrastructure rather than general Fortnite guides. Popularity and availability can change. Links point to official/public service pages; Discord sources are intentionally not split by region.</span>
+    <br><br><span data-lang-content="ru">Собрано: 16.08.2026 · FORTNITE COMP STACK · by atw</span><span data-lang-content="en" style="display:none">Built: 16.08.2026 · FORTNITE COMP STACK</span>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.magnetic').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left, y=e.clientY-r.top;
+    card.style.setProperty('--mx',x+'px'); card.style.setProperty('--my',y+'px');
+    const dx=(x-r.width/2)/r.width, dy=(y-r.height/2)/r.height;
+    card.style.transform=`perspective(700px) rotateX(${(-dy*1.2).toFixed(2)}deg) rotateY(${(dx*1.2).toFixed(2)}deg) translateY(-2px)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+const translations={
+  ru:{
+    practice:"Практика / Праки", practiceCount:"ОСНОВНАЯ COMP-ИНФРАСТРУКТУРА",
+    analytics:"Аналитика / Replay / AI", analyticsCount:"ДАННЫЕ И АНАЛИЗ",
+    drops:"Drop Spots / Высадка", dropsCount:"ВЫСАДКА",
+    tournaments:"Турниры / Competitive Data", tournamentsCount:"РЕЗУЛЬТАТЫ И СЦЕНА",
+    network:"Сеть / Ping", networkCount:"ИНСТРУМЕНТЫ ДЛЯ LATENCY",
+    recording:"Запись / Clips / Review", recordingCount:"VOD WORKFLOW",
+    aim:"Aim / Тренировка", aimCount:"МЕХАНИКИ",
+    communication:"Общение / Сообщество", communicationCount:"КОМЬЮНИТИ И СВЯЗЬ", other:"Другое / Полезное", otherCount:"ДОПОЛНИТЕЛЬНАЯ ИНФРАСТРУКТУРА",
+    practiceNav:"ПРАКТИКА", analyticsNav:"АНАЛИТИКА", dropsNav:"ВЫСАДКА", tournamentsNav:"ТУРНИРЫ",
+    networkNav:"СЕТЬ", recordingNav:"ЗАПИСЬ", aimNav:"AIM / ТРЕНИРОВКА", communicationNav:"ОБЩЕНИЕ", otherNav:"ДРУГОЕ",
+    open:"ОТКРЫТЬ ↗", discord:"DISCORD ↗", steam:"STEAM ↗", github:"GITHUB ↗", join:"ПРИСОЕДИНИТЬСЯ ↗"
+  },
+  en:{
+    practice:"Practice / Scrims", practiceCount:"CORE COMP INFRASTRUCTURE",
+    analytics:"Analytics / Replay / AI", analyticsCount:"DATA & REVIEW",
+    drops:"Drop Spots / Landing", dropsCount:"OFF-SPAWN",
+    tournaments:"Tournaments / Competitive Data", tournamentsCount:"RESULTS & SCENE",
+    network:"Network / Ping", networkCount:"LATENCY TOOLS",
+    recording:"Recording / Clips / Review", recordingCount:"VOD WORKFLOW",
+    aim:"Aim / Training", aimCount:"MECHANICS",
+    communication:"Communication / Community", communicationCount:"COMMUNITY & COMMS", other:"Other / Useful", otherCount:"EXTRA INFRASTRUCTURE",
+    practiceNav:"PRACTICE", analyticsNav:"ANALYTICS", dropsNav:"DROPS", tournamentsNav:"TOURNAMENTS",
+    networkNav:"NETWORK", recordingNav:"RECORDING", aimNav:"AIM / TRAINING", communicationNav:"COMMUNITY", otherNav:"OTHER",
+    open:"OPEN ↗", discord:"DISCORD ↗", steam:"STEAM ↗", github:"GITHUB ↗", join:"JOIN ↗"
+  }
+};
+function setLanguage(lang){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(translations[lang][key]) el.textContent=translations[lang][key];
+  });
+  document.querySelectorAll('[data-lang-content]').forEach(el=>{
+    el.style.display=el.dataset.langContent===lang?'inline':'none';
+  });
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('fortniteStackLang',lang);
+}
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
+setLanguage(localStorage.getItem('fortniteStackLang')||'ru');
+
+</script>
+</body>
+</html>
